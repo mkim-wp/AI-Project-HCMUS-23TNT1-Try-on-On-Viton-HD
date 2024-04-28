@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+
 from torch import nn
 from torch.nn import functional as F
 from torch.nn import init
@@ -382,7 +383,7 @@ class ALIASNorm(nn.Module):
     def forward(self, x, seg, misalign_mask=None):
         # Part 1. Generate parameter-free normalized activations.
         b, c, h, w = x.size()
-        noise = (torch.randn(b, w, h, 1).cuda() * self.noise_scale).transpose(1, 3)
+        noise = (torch.randn(b, w, h, 1).cpu() * self.noise_scale).transpose(1, 3)
 
         if misalign_mask is None:
             normalized = self.param_free_norm(x + noise)
